@@ -6,11 +6,11 @@ import * as jwt from 'jsonwebtoken';
 const secretKey = 'sssshhhhhhhh';
 
 // Function to authenticate incoming requests using JWT
-const authenticateRequest = (req: http.IncomingMessage): boolean => {
+export const authenticateRequest = (req: http.IncomingMessage): boolean => {
   const authHeader = req.headers.authorization;
 
   if (authHeader) {
-    const token = authHeader.split(' ')[1]; // Extract the JWT token from the header
+    const token: string = authHeader.split(' ')[1]; // Extract the JWT token from the header
 
     try {
       jwt.verify(token, secretKey); // Verify the token
