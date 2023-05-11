@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secretdonttellanyone
+      MYSQL_DATABASE: artic-api
+
+  db:
+    image: 'mysql:8.0'
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: secretdonttellanyone
+      MYSQL_DATABASE: artic-api
+    volumes: # db location, named volume (db-data)
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
