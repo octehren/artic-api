@@ -8,7 +8,8 @@
     "build": "tsc",
     "serve": "node dist/index.js",
     "lint": "eslint 'src/**/*.{js,ts}'",
-    "test": "jest"
+    "test": "jest",
+    "test-inspect": "node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "keywords": [],
   "author": "",

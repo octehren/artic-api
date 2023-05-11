@@ -1,27 +1,11 @@
 import * as http from 'http';
 import * as url from 'url';
-import * as jwt from 'jsonwebtoken';
 
-// Create a secret key for JWT signing
-const secretKey = 'sssshhhhhhhh';
+/* begin custom services */
+import { authenticateRequest } from './services/authService';
+/* endof custom services */
 
-// Function to authenticate incoming requests using JWT
-export const authenticateRequest = (req: http.IncomingMessage): boolean => {
-  const authHeader = req.headers.authorization;
 
-  if (authHeader) {
-    const token: string = authHeader.split(' ')[1]; // Extract the JWT token from the header
-
-    try {
-      jwt.verify(token, secretKey); // Verify the token
-      return true;
-    } catch (error) {
-      console.error('Invalid token:', error.message);
-    }
-  }
-
-  return false;
-};
 
 const server = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url || '', true);
