@@ -1,11 +1,14 @@
 # Artwork Browser & Simplified Shop
 
+## Instructions
+TODO
+
 ## Dev Milestones
 
 - [x] Add tests, lint
 - [x] Refactor auth into its own service
-- [ ] Add Dockerfile
-- [ ] Add docker-compose file with the app and a MySQL service
+- [ ] Add preliminary Dockerfile
+- [ ] Add preliminary docker-compose file with the app and a MySQL service
 - [ ] Add API service (index of artworks + pagination & perPage, show individual artwork)
 - [ ] Add tests for the API service
 - [ ] Add database creation, seeding (fields for artwork, user, purchases and JWTs strings + expirations)
@@ -13,6 +16,9 @@
 - [ ] Add tests for database service
 - [ ] Add auth service (login & logout method, purchasing only for authenticated users, forbidden to purchase acquired artwork)
 - [ ] Add tests for auth service
+- [ ] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* logout, *auth* purchase)
+- [ ] Add integration tests for routes
+- [ ] Populate this README with instructions on how to run the app
 
 
 ## ARTIC API
