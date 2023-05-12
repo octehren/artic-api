@@ -5,18 +5,23 @@ TODO
 
 ## Dev Milestones
 
+INITIAL SETUP
 - [x] Add tests, lint
 - [x] Refactor auth into its own service
-- [ ] Add preliminary Dockerfile
-- [ ] Add preliminary docker-compose file with the app and a MySQL service
+- [x] Add preliminary Dockerfile
+- [x] Add preliminary docker-compose file with the app and a MySQL service
+API SERVICE
 - [ ] Add API service (index of artworks + pagination & perPage, show individual artwork)
 - [ ] Add tests for the API service
+DATABASE SERVICE
 - [ ] Add database creation, seeding (fields for artwork, user, purchases and JWTs strings + expirations)
 - [ ] Add database service (implement purchasing logic, JWT creation, owner of artwork on individual artwork page)
 - [ ] Add tests for database service
+AUTH SERVICE
 - [ ] Add auth service (login & logout method, purchasing only for authenticated users, forbidden to purchase acquired artwork)
 - [ ] Add tests for auth service
 - [ ] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* logout, *auth* purchase)
+WRAP-UP
 - [ ] Add integration tests for routes
 - [ ] Populate this README with instructions on how to run the app
 
