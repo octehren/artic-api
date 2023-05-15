@@ -1,7 +1,8 @@
 # Artwork Browser & Simplified Shop
 
 ## Instructions
-TODO
+- Check list of artworks: `curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"` (replace values for page & perPage params; default perPage = 25)
+- Check artwork:
 
 ## Dev Milestones
 
@@ -11,8 +12,8 @@ INITIAL SETUP
 - [x] Add preliminary Dockerfile
 - [x] Add preliminary docker-compose file with the app and a MySQL service
 API SERVICE
-- [ ] Add API service (index of artworks + pagination & perPage, show individual artwork)
-- [ ] Add tests for the API service
+- [x] Add API service (index of artworks + pagination & perPage, show individual artwork)
+- [x] Add tests for the API service
 DATABASE SERVICE
 - [ ] Add database creation, seeding (fields for artwork, user, purchases and JWTs strings + expirations)
 - [ ] Add database service (implement purchasing logic, JWT creation, owner of artwork on individual artwork page)
