@@ -6,10 +6,11 @@ import { API_URL, DEFAULT_ARTWORK_FIELDS_FOR_INDEX, DEFAULT_ARTWORK_FIELDS_FOR_S
 jest.mock('axios');
 
 const mockAxios = axios as jest.Mocked<typeof axios>;
+const testCache = new NodeCache();
 
 describe('getArtworks', () => {
   afterEach(() => {
-    apiService.cache.flushAll();
+    testCache.flushAll();
   });
 
   it('fetches artworks from the API when cache is empty', async () => {
@@ -21,9 +22,9 @@ describe('getArtworks', () => {
       },
     };
     mockAxios.get.mockResolvedValueOnce(mockData);
-    const result = await apiService.getArtworks(1, 1);
+    const result = await apiService.getArtworks(1, 1, testCache);
 
-    const cachedValue = apiService.cache.get('artworks-1-1');
+    const cachedValue = testCache.get('artworks-1-1');
     expect(cachedValue).toEqual(result);
   });
 
@@ -31,8 +32,8 @@ describe('getArtworks', () => {
     const cachedArtworks = [
       { id: 1, title: 'Artwork 1', originalUrl: 'https://www.artic.edu/artworks/1' }
     ];
-    apiService.cache.set('artworks-1-1', cachedArtworks);
-    const result = await apiService.getArtworks(1, 1);
+    testCache.set('artworks-1-1', cachedArtworks);
+    const result = await apiService.getArtworks(1, 1, testCache);
 
     expect(result).toEqual(cachedArtworks);
   });
@@ -45,7 +46,7 @@ describe('getArtworks', () => {
 
 describe('getArtwork', () => {
   afterEach(() => {
-    apiService.cache.flushAll();
+    testCache.flushAll();
   });
 
   it('fetches artwork from the API when cache is empty', async () => {
@@ -63,8 +64,8 @@ describe('getArtwork', () => {
       }
     });
   
-    const result = await apiService.getArtwork(1);
-    const cachedValue = apiService.cache.get('artwork-1');
+    const result = await apiService.getArtwork(1, testCache);
+    const cachedValue = testCache.get('artwork-1');
     expect(cachedValue).toEqual(result);
   });
 
@@ -75,8 +76,8 @@ describe('getArtwork', () => {
       description: 'description',
       originalUrl: 'https://www.artic.edu/artworks/1'
     };
-    apiService.cache.set('artwork-1', cachedArtwork);
-    const result = await apiService.getArtwork(1);
+    testCache.set('artwork-1', cachedArtwork);
+    const result = await apiService.getArtwork(1, testCache);
 
     expect(result).toEqual(cachedArtwork);
   });

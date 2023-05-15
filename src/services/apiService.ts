@@ -1,10 +1,10 @@
 import axios from 'axios';
 import NodeCache from 'node-cache';
 import { API_URL, DEFAULT_ARTWORK_FIELDS_FOR_INDEX, DEFAULT_ARTWORK_FIELDS_FOR_SHOW } from '../config'
+import { appCache } from '../appCache';
 
-const cache = new NodeCache();
-
-export const getArtworks = async (page: number = 1, limit: number = 25): Promise<any> => {
+// pass cache as injected dependency to isolate testing cache
+export const getArtworks = async (page: number = 1, limit: number = 25, cache:NodeCache = appCache): Promise<any> => {
   const key = `artworks-${page}-${limit}`;
   const cacheContent = cache.get(key);
 
@@ -36,7 +36,8 @@ export const getArtworks = async (page: number = 1, limit: number = 25): Promise
   }
 };
 
-export const getArtwork = async (id: number): Promise<any> => { // single artwork response is uncached
+// pass cache as injected dependency to isolate testing cache
+export const getArtwork = async (id: number, cache:NodeCache = appCache): Promise<any> => { // single artwork response is uncached
   const key = `artwork-${id}`;
   const cacheContent = cache.get(key);
 
@@ -69,5 +70,4 @@ export const getArtwork = async (id: number): Promise<any> => { // single artwor
 export default {
   getArtworks,
   getArtwork,
-  cache,
 };
