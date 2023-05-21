@@ -22,3 +22,7 @@ export const authenticateRequest = (req: http.IncomingMessage): boolean => {
 
   return false;
 };
+
+export const GetRequestingUserId = (): number => {
+  return 1; // will get from JWT token later
+}

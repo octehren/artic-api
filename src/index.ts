@@ -50,6 +50,9 @@ const server: http.Server<typeof http.IncomingMessage, typeof http.ServerRespons
         res.end(JSON.stringify(artwork, null, 2)); // prettifies response
       }
       break;
+    case '/dbtest':
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ response: 'huhuhhdushdushduu' }));
     default:
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Route not found' }));

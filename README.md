@@ -4,6 +4,12 @@
 - Check list of artworks: `curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"` (replace values for page & perPage params; default perPage = 25)
 - Check artwork:
 
+### Testing
+Start dev container:
+`docker-compose -f docker-compose.dev.yml up --build`
+Run tests:
+`docker-compose -f docker-compose.dev.yml exec app npm test` 
+
 ## Dev Milestones
 
 INITIAL SETUP

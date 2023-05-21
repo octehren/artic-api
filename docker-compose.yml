@@ -8,16 +8,17 @@ services:
     depends_on:
       - db
     environment:
+      JWT_SECRET: ssshhhhh,secret!!!
       MYSQL_HOST: db
       MYSQL_USER: root
-      MYSQL_PASSWORD: secretdonttellanyone
+      MYSQL_PASSWORD: pwrd
       MYSQL_DATABASE: artic-api
 
   db:
     image: 'mysql:8.0'
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: secretdonttellanyone
+      MYSQL_ROOT_PASSWORD: pwrd
       MYSQL_DATABASE: artic-api
     volumes: # db location, named volume (db-data)
       - db-data:/var/lib/mysql

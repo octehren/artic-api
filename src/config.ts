@@ -19,8 +19,23 @@ export const DEFAULT_ARTWORK_FIELDS_FOR_SHOW: string = [
     'medium_display',
     'exhibition_history'
 ].join(',')
-export const DATABASE_URL = 'mysql';
+
+/******* DB CONFIG *******/
+export const MYSQL_HOST = process.env.MYSQL_HOST || 'db';
+export const MYSQL_USER = process.env.MYSQL_USER || 'artic-api-user';
+export const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || 'pwrd';
+export const MYSQL_DATABASE = process.env.MYSQL_DATABASE || 'artic-api';
+export const DEFAULT_POOL_CONFIG = {
+    host: MYSQL_HOST,
+    user: MYSQL_USER,
+    password: MYSQL_PASSWORD,
+    database: MYSQL_DATABASE,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+}
+
+/******* ENDOF DB CONFIG *******/
 
 // using a placeholder value as a json web token is meant only for tests, this should never be in a production env as it allows for a hard-coded token.
-// @ts-ignore
 export const JWT_SECRET: string = process.env.JWT_SECRET || 'ssshhhhh,secret!!!';
