@@ -21,6 +21,7 @@ services:
       MYSQL_DATABASE: artic-api
     volumes: # db location, named volume (db-data)
       - db-data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql # initialized db
 
 volumes:
   db-data:
