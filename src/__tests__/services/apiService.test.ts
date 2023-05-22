@@ -8,10 +8,11 @@ jest.mock('axios');
 const mockAxios = axios as jest.Mocked<typeof axios>;
 const testCache = new NodeCache();
 
+afterEach(() => {
+  testCache.flushAll();
+});
+
 describe('getArtworks', () => {
-  afterEach(() => {
-    testCache.flushAll();
-  });
 
   it('fetches artworks from the API when cache is empty', async () => {
     const mockData = {
@@ -45,9 +46,6 @@ describe('getArtworks', () => {
 });
 
 describe('getArtwork', () => {
-  afterEach(() => {
-    testCache.flushAll();
-  });
 
   it('fetches artwork from the API when cache is empty', async () => {
     const mockArtworkData = {
@@ -92,7 +90,6 @@ describe('getArtwork', () => {
         // else, does nothing as API Erroris expected
         throw error
       }
-    
     }
   });
 });
