@@ -53,7 +53,7 @@ describe('getArtwork', () => {
       thumbnail: {
         alt_text: 'description'
       },
-      ownerEmail: 'dummy@dummy.com',
+      ownedBy: 'dummy@dummy.com',
     };
   
     mockAxios.get.mockResolvedValueOnce({
@@ -73,7 +73,7 @@ describe('getArtwork', () => {
       title: 'Artwork 1',
       description: 'description',
       originalUrl: 'https://www.artic.edu/artworks/1',
-      ownerEmail: 'dummy@dummy.com',
+      ownedBy: 'dummy@dummy.com',
     };
     testCache.set('artwork-1', cachedArtwork);
     const result = await apiService.getArtwork(1, testCache);
