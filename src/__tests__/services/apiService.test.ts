@@ -1,7 +1,6 @@
 import axios from 'axios';
 import NodeCache from 'node-cache';
 import apiService from '../../services/apiService';
-import { API_URL, DEFAULT_ARTWORK_FIELDS_FOR_INDEX, DEFAULT_ARTWORK_FIELDS_FOR_SHOW } from '../../config'
 
 jest.mock('axios');
 
@@ -53,7 +52,8 @@ describe('getArtwork', () => {
       title: 'Artwork 1',
       thumbnail: {
         alt_text: 'description'
-      }
+      },
+      ownerEmail: 'dummy@dummy.com',
     };
   
     mockAxios.get.mockResolvedValueOnce({
@@ -72,7 +72,8 @@ describe('getArtwork', () => {
       id: 1,
       title: 'Artwork 1',
       description: 'description',
-      originalUrl: 'https://www.artic.edu/artworks/1'
+      originalUrl: 'https://www.artic.edu/artworks/1',
+      ownerEmail: 'dummy@dummy.com',
     };
     testCache.set('artwork-1', cachedArtwork);
     const result = await apiService.getArtwork(1, testCache);

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import NodeCache from 'node-cache';
 import { API_URL, DEFAULT_ARTWORK_FIELDS_FOR_INDEX, DEFAULT_ARTWORK_FIELDS_FOR_SHOW } from '../config'
+import { getUserEmailByArtworkId } from './dbService';
 import { appCache } from '../appCache';
 
 // pass cache as injected dependency to isolate testing cache
@@ -53,10 +54,12 @@ export const getArtwork = async (id: number, cache:NodeCache = appCache): Promis
     });
     const detailedArtwork = response.data.data
     const { thumbnail, ...artworkWithoutThumbnail } = detailedArtwork;
+    const ownerEmail : string = await getUserEmailByArtworkId(id) || "Available for purchase!"
     const artwork: any = {
         ...artworkWithoutThumbnail,
         description: thumbnail.alt_text,
-        originalUrl: `https://www.artic.edu/artworks/${artworkWithoutThumbnail.id}`
+        originalUrl: `https://www.artic.edu/artworks/${artworkWithoutThumbnail.id}`,
+        ownedBy: ownerEmail,
     }
 
     cache.set(key, artwork, 3600); // cache for 1 hour
