@@ -18,7 +18,9 @@ CREATE TABLE IF NOT EXISTS `artic-api`.`artwork` (
     user_id INT,
     external_id INT UNIQUE NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    FOREIGN KEY (user_id) 
+      REFERENCES user(id)
+      ON DELETE CASCADE
 );
 
 -- Seeds
