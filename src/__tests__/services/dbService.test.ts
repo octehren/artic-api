@@ -1,27 +1,18 @@
 import mysql from 'mysql2/promise';
-import { pool, createArtwork, getUserEmailByArtworkId } from '../../services/dbService';
+import { pool, createArtwork, getUserEmailByArtworkId, createUser } from '../../services/dbService';
 
 
 let testUserId: number;
 const existingArtwork = 101;
 const unexistingArtwork = 9999;
 const testUserEmail = 'test@example.com';
+const testUserPassword = 'password'
 
 beforeAll(async () => {
   // start transaction to be rolled back once tests end
   await pool.execute('START TRANSACTION');
   // creates test user
-  await pool.execute(`
-    INSERT INTO user (email, password)
-    VALUES ('${testUserEmail}', 'password');
-  `);
-
-  const [testUserQuery] = await pool.query(`
-    SELECT id FROM user
-    WHERE email = '${testUserEmail}'
-    LIMIT 1
-  `) as mysql.RowDataPacket[];
-  testUserId = testUserQuery[0].id;
+  testUserId = await createUser(testUserEmail, testUserPassword);
 });
 
 afterAll(async () => {

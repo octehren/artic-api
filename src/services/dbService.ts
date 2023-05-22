@@ -36,3 +36,19 @@ export async function getUserEmailByArtworkId(externalId: number): Promise<strin
     throw error;
   }
 }
+
+/* returns user Id on successful creation */
+export const createUser = async (email: string, password: string): Promise<number> => {
+  try {
+    const query = 'INSERT INTO user (email, password) VALUES (?, ?)';
+    const values = [email, password];
+
+    const [result] = await pool.execute(query, values);
+    const userId: number = (result as mysql.RowDataPacket).insertId;
+
+    return userId;
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
+};
