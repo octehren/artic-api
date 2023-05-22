@@ -20,3 +20,22 @@ export const createArtwork = async (userId: number, externalId: number): Promise
     console.log(err.message);
   }
 };
+
+export async function getUserEmailByArtworkId(externalId: number): Promise<string | null> {
+  const query = 'SELECT user.email FROM artwork JOIN user ON artwork.user_id = user.id WHERE artwork.external_id = ?';
+  const params = [externalId];
+  try {
+      const rows = await pool.query(query, params);
+      // .length only available as mysql.RowDataPacket[] interface
+      const rowDataPackets = rows as mysql.RowDataPacket[];
+      if (rowDataPackets.length > 0) {
+          return rowDataPackets[0].email;
+      } else {
+          return null;
+      }
+  } catch (error) {
+      console.error('Error retrieving user email:', error);
+      throw error;
+  }
+}
+
