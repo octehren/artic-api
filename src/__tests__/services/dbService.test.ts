@@ -10,7 +10,7 @@ const testUserPassword = 'password'
 
 beforeAll(async () => {
   // start transaction to be rolled back once tests end
-  await pool.execute('START TRANSACTION');
+  await pool.query('START TRANSACTION');
   // creates test user
   testUserId = await createUser(testUserEmail, testUserPassword);
 });
