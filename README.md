@@ -21,10 +21,13 @@ API SERVICE
 - [x] Add API service (index of artworks + pagination & perPage, show individual artwork)
 - [x] Add tests for the API service
 DATABASE SERVICE
-- [ ] Add database creation, seeding (fields for artwork, user, purchases and JWTs strings + expirations)
-- [ ] Add database service (implement purchasing logic, JWT creation, owner of artwork on individual artwork page)
-- [ ] Add tests for database service
+- [x] Add database creation, seeding (fields for artwork, user, purchases)
+- [x] Add database service (implement purchasing logic, owner of artwork on individual artwork page)
+- [x] Add user creation functionality
+- [x] Add owner e-mail to individual artwork
+- [x] Add tests for database service
 AUTH SERVICE
+- [ ] Add signup functionality
 - [ ] Add auth service (login & logout method, purchasing only for authenticated users, forbidden to purchase acquired artwork)
 - [ ] Add tests for auth service
 - [ ] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* logout, *auth* purchase)
