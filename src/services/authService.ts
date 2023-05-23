@@ -2,6 +2,7 @@ import * as http from 'http';
 import * as jwt from 'jsonwebtoken';
 
 import { JWT_SECRET } from '../config';
+import { getUserId } from './dbService';
 // Create a secret key for JWT signing
 const secretKey = JWT_SECRET;
 
@@ -23,6 +24,37 @@ export const authenticateRequest = (req: http.IncomingMessage): boolean => {
   return false;
 };
 
-export const GetRequestingUserId = (): number => {
-  return 1; // will get from JWT token later
+// issues token to login user, expires in 30 min
+const issueToken = (userId: number): string => {
+  const payload = { userId };
+  try {
+    const token = jwt.sign(payload, JWT_SECRET);
+    return token;
+  } catch (error) {
+    console.error('Error signing JWT:', error);
+    throw error;
+  }
+};
+
+
+export const getAuthForUser = async (email: string, password: string): Promise<string> => {
+  try {
+    const userId: number = await getUserId(email, password);
+    const token: string = issueToken(userId);
+    return token;
+  } catch (error) {
+    console.error('Error getting authentication for user:', error);
+    throw error;
+  }
+};
+
+
+export const currentUserId = (authToken: string): number => {
+  try {
+    const decoded = jwt.verify(authToken, JWT_SECRET);
+    const payload = decoded as { [key: string]: any };
+    return payload.id;
+  } catch (error) {
+    console.error('Error decoding JWT:', error);
+  }
 }

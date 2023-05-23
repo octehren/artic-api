@@ -52,3 +52,24 @@ export const createUser = async (email: string, password: string): Promise<numbe
     throw error;
   }
 };
+
+// returns id for user based on successful match
+export const getUserId = async (email: string, password: string): Promise<number | null> => {
+  try {
+    const query = 'SELECT id FROM user WHERE email = ? AND password = ?';
+    const values = [email, password];
+
+    const [rows] = await pool.query(query, values);
+    const rowDataPackets = rows as mysql.RowDataPacket[];
+
+    if (rowDataPackets.length > 0) {
+      return rowDataPackets[0].id as number;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error retrieving user ID:', error);
+    throw error;
+  }
+};
+
