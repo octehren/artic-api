@@ -4,16 +4,18 @@
 - Check list of artworks: `curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"` (replace values for page & perPage params; default perPage = 25)
 - Check artwork:
 
-- Receive auth token on login (must send email & password on request body):
+- Logins, receives auth token (must send email & password on request body):
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"email": "user1@email.com", "password": "password"}' http://localhost:3000/login
 ```
 
-
-- Receive auth token on signup (must send email & password on request body):
+- Signs up, receives auth token (must send email & password on request body):
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"email": "user1@email.com", "password": "password"}' http://localhost:3000/signup
+curl -X POST -H "Content-Type: application/json" -d '{"email": "user1000@email.com", "password": "password"}' http://localhost:3000/signup
 ```
+
+- Acquire artwork:
+
 
 ### Testing
 Start dev container:
@@ -38,11 +40,12 @@ DATABASE SERVICE
 - [x] Add owner e-mail to individual artwork
 - [x] Add tests for database service
 AUTH SERVICE
-- [ ] Add signup functionality (should return JWT token)
-- [ ] Add auth service (login & logout method, purchasing only for authenticated users, forbidden to purchase acquired artwork)
+- [x] Add signup functionality (should return JWT token)
+- [x] Add auth service (login method, purchasing only for authenticated users, forbidden to purchase acquired artwork)
 - [x] Add tests for auth service
-- [ ] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* logout, *auth* purchase)
+- [x] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* purchase)
 WRAP-UP
+- [ ] Add myArtworks route
 - [ ] Add integration tests for routes
 - [ ] Populate this README with instructions on how to run the app
 
