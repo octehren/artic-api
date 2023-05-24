@@ -73,6 +73,28 @@ const server: http.Server<typeof http.IncomingMessage, typeof http.ServerRespons
           res.end(JSON.stringify({ error: 'Method not allowed' }));
         }
         break;
+      case '/signup':
+        if (req.method === 'POST') {
+          try {
+            // accepts e-mail and password only in the request body
+            const { email, password } = JSON.parse(await getRequestBody(req));
+            // creates user, throws error if existent
+            await dbService.createUser(email, password);
+            // performs authentication and gets the authorization token
+            const authToken = await authService.getAuthTokenForUser(email, password);
+            // returns the authorization token in the response
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ token: authToken }));
+          } catch (error) {
+            console.error('Error during login:', error);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Internal server error' }));
+          }
+        } else { // non-POST request
+          res.writeHead(405, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Method not allowed' }));
+        }
+        break;
       default:
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Route not found' }));
