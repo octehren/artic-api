@@ -25,8 +25,11 @@ export const authenticateRequest = (req: http.IncomingMessage): boolean => {
 };
 
 // issues token to login user, expires in 30 min
-const issueToken = (userId: number): string => {
-  const payload = { userId };
+export const issueToken = (userId: number): string => {
+  const payload = { 
+    userId,
+    exp: Math.floor(Date.now() / 1000) + 1800, // expires in 30 min
+  }
   try {
     const token = jwt.sign(payload, JWT_SECRET);
     return token;
