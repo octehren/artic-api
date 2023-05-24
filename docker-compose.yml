@@ -1,28 +1,35 @@
 version: '3.9'
-
 services:
   app:
-    build: .
+    build: 
+      context: .
     ports:
-      - '3000:3000'
-    depends_on:
-      - db
+      - 3000:3000
     environment:
+      NODE_ENV: production
       JWT_SECRET: ssshhhhh,secret!!!
       MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: pwrd
       MYSQL_DATABASE: artic-api
+      MYSQL_USER: artic-api-user
+      MYSQL_PASSWORD: pwrd
+      
+    volumes:
+      - .:/app # mounts container app on local code
+      - /app/node_modules
 
   db:
-    image: 'mysql:8.0'
+    image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: pwrd
       MYSQL_DATABASE: artic-api
-    volumes: # db location, named volume (db-data)
-      - db-data:/var/lib/mysql
+      MYSQL_USER: artic-api-user
+      MYSQL_PASSWORD: pwrd
+      MYSQL_ROOT_PASSWORD: pwrd
+    ports:
+      - 3306:3306
+    volumes:
+      - db_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql # initialized db
-
+    
 volumes:
-  db-data:
+  db_data: {}
