@@ -5,25 +5,49 @@
 
 ## Instructions
 - `/artworks` Check list of artworks (optional page & perPage params): 
-`curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"`
+```bash
+
+curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"
+
+```
 (replace values for page & perPage params; default perPage = 25)
 - `/artwork` Check artwork (mandatory id param):
-`curl -X GET "http://localhost:3000/artwork?id=122159"`
+```bash
+
+curl -X GET "http://localhost:3000/artwork?id=122159"
+
+```
 - `/login` Logins, receives auth token (must send email & password on request body):
 ```bash
+
 curl -X POST -H "Content-Type: application/json" -d '{"email": "user1@email.com", "password": "password"}' http://localhost:3000/login
+
 ```
 - `/signup` Signs up, receives auth token (must send email & password on request body):
 ```bash
+
 curl -X POST -H "Content-Type: application/json" -d '{"email": "user1000@email.com", "password": "password"}' http://localhost:3000/signup
+
 ```
 - `/acquire` Acquire artwork (mandatory id param for artwork and auth token on header):
 Replace \<token> with value received on login/signup.
-`curl -X POST 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer <token>'`
+```bash
+
+curl -X POST 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer <token>'
+
+```
 Ex:
-`curl -X POST 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4NDg5NTUzNSwiaWF0IjoxNjg0ODkzNzM1fQ.4FequD9pM5jbpWhG38LV51rUoQbvVLj4m9bv6iwde7Q'`
+```bash
+
+curl -X POST 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4NDg5NTUzNSwiaWF0IjoxNjg0ODkzNzM1fQ.4FequD9pM5jbpWhG38LV51rUoQbvVLj4m9bv6iwde7Q'
+
+```
 - `/myArtworks` Browser my acquired artworks (mandatory auth token on header):
-`curl -X GET 'localhost:3000/myArtworks' -H 'Authorization: Bearer <token>'`
+```bash
+
+curl -X GET 'localhost:3000/myArtworks' -H 'Authorization: Bearer <token>'
+
+```
 
 ### Testing
 Start dev container:
