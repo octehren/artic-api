@@ -1,6 +1,7 @@
 # Artwork Browser & Simplified Shop
 
-Artwork IDs for easy reference: 26650 122159 22736 21934 14572
+## Starting App (Production)
+`docker compose up`
 
 ## Instructions
 - `/artworks` Check list of artworks (optional page & perPage params): 
@@ -23,6 +24,7 @@ Ex:
 `curl -X POST 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4NDg5NTUzNSwiaWF0IjoxNjg0ODkzNzM1fQ.4FequD9pM5jbpWhG38LV51rUoQbvVLj4m9bv6iwde7Q'`
 - `/myArtworks` Browser my acquired artworks (mandatory auth token on header):
 `curl -X GET 'localhost:3000/myArtworks' -H 'Authorization: Bearer <token>'`
+
 ### Testing
 Start dev container:
 `docker-compose -f docker-compose.dev.yml up --build`
