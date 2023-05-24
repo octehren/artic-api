@@ -2,39 +2,65 @@ import * as http from 'http';
 import * as url from 'url';
 
 /* begin custom services */
-import { authenticateRequest, getAuthForUser } from './services/authService';
-import apiService, { getArtworks, getArtwork } from './services/apiService';
-/* endof custom services */
+import authService from './services/authService';
+import apiService from './services/apiService';
+import dbService from './services/dbService';
+/* end of custom services */
 
 const server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> = http.createServer(async (req, res) => {
-  const requestUrl : url.UrlWithParsedQuery = url.parse(req.url as string, true);
-  switch(requestUrl.pathname) {
-    case '/artworks':
-      const page = requestUrl.query.page ? Number(requestUrl.query.page) : 1;
-      const limit = requestUrl.query.perPage ? Number(requestUrl.query.perPage) : 10;
-      const data = await apiService.getArtworks(page, limit);
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(data, null, 2)); // prettifies response
-      break;
-    case '/artwork':
-      const id = requestUrl.query.id ? Number(requestUrl.query.id) : null;
-      if (!id) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Artwork id is required' }));
-      } else {
-        const artwork = await apiService.getArtwork(id);
+  try {
+    const requestUrl: url.UrlWithParsedQuery = url.parse(req.url as string, true);
+    switch (requestUrl.pathname) {
+      case '/artworks':
+        const page = requestUrl.query.page ? Number(requestUrl.query.page) : 1;
+        const limit = requestUrl.query.perPage ? Number(requestUrl.query.perPage) : 10;
+        const data = await apiService.getArtworks(page, limit);
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(artwork, null, 2)); // prettifies response
-      }
-      break;
+        res.end(JSON.stringify(data, null, 2)); // prettifies response
+        break;
+      case '/artwork':
+        const artworkId = requestUrl.query.id ? Number(requestUrl.query.id) : null;
+        if (!artworkId) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Artwork id is required' }));
+        } else {
+          const artwork = await apiService.getArtwork(artworkId);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(artwork, null, 2)); // prettifies response
+        }
+        break;
+      case '/acquire':
+        const validUser = authService.authenticateRequest(req);
+        const acquireId = requestUrl.query.id ? Number(requestUrl.query.id) : null;
+        if (!acquireId || !validUser) {
+          const errorCode = validUser ? 400 : 401;
+          res.writeHead(errorCode, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Artwork id is required and user must be logged in to acquire.' }));
+        } else {
+          const acquirerUserId = await authService.currentUserId(req);
+          const hasDifferentOwner = await dbService.hasDifferentOwner(acquireId, acquirerUserId);
+          if (hasDifferentOwner) {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Trying to get what isn't yours, huh?` })); // prettifies response
+          } else { // either already acquired by or ready to be acquired by the user
+            dbService.createArtwork(acquirerUserId, acquireId);
+            const artwork = await apiService.getArtwork(acquireId);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(artwork, null, 2)); // prettifies response
+          }
+        }
+        break;
+      case '/myArtworks':
+        // TODO: Implement logic for getting user's artworks
+        break;
       case '/login':
         if (req.method === 'POST') {
           try {
-            // accepts e-mail and password only on request body
+            // accepts e-mail and password only in the request body
             const { email, password } = JSON.parse(await getRequestBody(req));
             // performs authentication and gets the authorization token
-            const authToken = await getAuthForUser(email, password);
-            // returns the authorization token in response
+            const authToken = await authService.getAuthTokenForUser(email, password);
+            // returns the authorization token in the response
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ token: authToken }));
           } catch (error) {
@@ -42,7 +68,7 @@ const server: http.Server<typeof http.IncomingMessage, typeof http.ServerRespons
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Internal server error' }));
           }
-        } else { // non POST req
+        } else { // non-POST request
           res.writeHead(405, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: 'Method not allowed' }));
         }
@@ -51,7 +77,12 @@ const server: http.Server<typeof http.IncomingMessage, typeof http.ServerRespons
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Route not found' }));
     }
-  });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Internal server error' }));
+  }
+});
 
 const port = process.env.PORT || "3000";
 
@@ -73,3 +104,5 @@ async function getRequestBody(req: http.IncomingMessage): Promise<string> {
     });
   });
 }
+
+export default server;
