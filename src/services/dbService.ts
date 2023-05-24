@@ -110,4 +110,5 @@ export default {
   createUser,
   hasDifferentOwner,
   createArtwork,
+  getUserArtworks,
 }

@@ -51,7 +51,16 @@ const server: http.Server<typeof http.IncomingMessage, typeof http.ServerRespons
         }
         break;
       case '/myArtworks':
-        // TODO: Implement logic for getting user's artworks
+        // user logged in
+        if (!authService.authenticateRequest(req)) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'You must log-in to browser your owned artworks.' }));
+        } else {
+          const userId = authService.currentUserId(req);
+          const userArtworks = await dbService.getUserArtworks(userId);
+          res.writeHead(200, { 'Content-Type': 'application-json' });
+          res.end(JSON.stringify({ message: `Showing artworks for user ${userId}`, artworks: userArtworks }));
+        }
         break;
       case '/login':
         if (req.method === 'POST') {
