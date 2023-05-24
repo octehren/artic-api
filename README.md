@@ -1,21 +1,24 @@
 # Artwork Browser & Simplified Shop
 
 ## Instructions
-- Check list of artworks: `curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"` (replace values for page & perPage params; default perPage = 25)
+- Check list of artworks: 
+`curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"`
+(replace values for page & perPage params; default perPage = 25)
 - Check artwork:
-
+`curl -X GET "http://localhost:3000/artwork?id=122159"`
 - Logins, receives auth token (must send email & password on request body):
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"email": "user1@email.com", "password": "password"}' http://localhost:3000/login
 ```
-
 - Signs up, receives auth token (must send email & password on request body):
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"email": "user1000@email.com", "password": "password"}' http://localhost:3000/signup
 ```
-
 - Acquire artwork:
-
+Replace \<token> with value received on login/signup.
+`curl -X GET 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer <token>'`
+Ex:
+`curl -X GET 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4NDg5NTUzNSwiaWF0IjoxNjg0ODkzNzM1fQ.4FequD9pM5jbpWhG38LV51rUoQbvVLj4m9bv6iwde7Q'`
 
 ### Testing
 Start dev container:
