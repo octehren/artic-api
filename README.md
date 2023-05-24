@@ -40,7 +40,7 @@ DATABASE SERVICE
 AUTH SERVICE
 - [ ] Add signup functionality (should return JWT token)
 - [ ] Add auth service (login & logout method, purchasing only for authenticated users, forbidden to purchase acquired artwork)
-- [ ] Add tests for auth service
+- [x] Add tests for auth service
 - [ ] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* logout, *auth* purchase)
 WRAP-UP
 - [ ] Add integration tests for routes
