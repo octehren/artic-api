@@ -73,3 +73,41 @@ export const getUserId = async (email: string, password: string): Promise<number
   }
 };
 
+export const hasDifferentOwner = async (externalArtworkId: number, userId: number): Promise<boolean> => {
+  try {
+    // fetches the artwork details by externalId from the database, checks if user_id is different
+    const [rows] = await pool.query('SELECT * FROM artwork WHERE external_id = ? AND user_id <> ? LIMIT 1', [externalArtworkId,userId]);
+    const rowDataPackets = rows as mysql.RowDataPacket[];
+    // if record is found and has different user_id, return true
+    if (rowDataPackets.length > 0) {
+      return rowDataPackets[0]['user_id'] !== userId;
+    }
+    return false;
+  } catch (error) {
+    // Handle any errors that occur during the database fetch operation
+    console.error('Error fetching artwork:', error);
+    throw error;
+  }
+}
+
+export const getUserArtworks = async (userId: number): Promise<number[]> => {
+  try {
+    // Fetches the artwork external IDs from the database for the specified user_id
+    const [rows] = await pool.query('SELECT external_id FROM artwork WHERE user_id = ?', [userId]);
+    const rowDataPackets = rows as mysql.RowDataPacket[];
+    // Extract the external IDs from the fetched rows
+    const externalIds = rowDataPackets.map((row) => row['external_id']);
+    return externalIds;
+  } catch (error) {
+    // Handle any errors that occur during the database fetch operation
+    console.error('Error fetching user artworks:', error);
+    throw error;
+  }
+};
+
+
+export default {
+  createUser,
+  hasDifferentOwner,
+  createArtwork,
+}

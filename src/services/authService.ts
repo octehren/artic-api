@@ -40,7 +40,7 @@ export const issueToken = (userId: number): string => {
 };
 
 
-export const getAuthForUser = async (email: string, password: string): Promise<string> => {
+export const getAuthTokenForUser = async (email: string, password: string): Promise<string> => {
   try {
     const userId: number = await getUserId(email, password);
     const token: string = issueToken(userId);
@@ -52,12 +52,20 @@ export const getAuthForUser = async (email: string, password: string): Promise<s
 };
 
 
-export const currentUserId = (authToken: string): number => {
+export const currentUserId = (req: http.IncomingMessage): number => {
+  const authHeader = req.headers.authorization;
+  const token : string = authHeader.split(' ')[1];
   try {
-    const decoded = jwt.verify(authToken, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const payload = decoded as { [key: string]: any };
-    return payload.id;
+    return payload.userId;
   } catch (error) {
     console.error('Error decoding JWT:', error);
   }
+}
+
+export default {
+  authenticateRequest,
+  currentUserId,
+  getAuthTokenForUser,
 }
