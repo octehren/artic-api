@@ -4,6 +4,17 @@
 - Check list of artworks: `curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"` (replace values for page & perPage params; default perPage = 25)
 - Check artwork:
 
+- Receive auth token on login (must send email & password on request body):
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"email": "user1@email.com", "password": "password"}' http://localhost:3000/login
+```
+
+
+- Receive auth token on signup (must send email & password on request body):
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"email": "user1@email.com", "password": "password"}' http://localhost:3000/signup
+```
+
 ### Testing
 Start dev container:
 `docker-compose -f docker-compose.dev.yml up --build`
