@@ -1,5 +1,6 @@
 import mysql from 'mysql2/promise';
 import { DEFAULT_POOL_CONFIG } from '../config';
+import { appCache } from '../appCache';
 
 export const pool = mysql.createPool(DEFAULT_POOL_CONFIG);
 
@@ -13,6 +14,11 @@ export const createArtwork = async (userId: number, externalId: number): Promise
     }
 
     await pool.execute('INSERT INTO artwork (user_id, external_id) VALUES (?, ?)', [userId, externalId]);
+    // remove from cache if acquisition successful
+    const cacheKey = `artwork-${externalId}`;
+    // must await or it might return 'available for purchase' on first acquisition
+    // if artwork was browsed before
+    await appCache.del(cacheKey);
   } catch (err) {
     console.log(err.message);
   }
