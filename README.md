@@ -27,7 +27,7 @@ DATABASE SERVICE
 - [x] Add owner e-mail to individual artwork
 - [x] Add tests for database service
 AUTH SERVICE
-- [ ] Add signup functionality
+- [ ] Add signup functionality (should return JWT token)
 - [ ] Add auth service (login & logout method, purchasing only for authenticated users, forbidden to purchase acquired artwork)
 - [ ] Add tests for auth service
 - [ ] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* logout, *auth* purchase)
@@ -62,8 +62,7 @@ process or add prices to the artworks, the purchase is immediate if the artwork 
 have an owner.
 
 ## Database
-Use MySQL as your database management system. You should save the purchases in the
-database.
+Use MySQL as your database management system. You should save the purchases in the database.
 
 
 ## Other Requirements
