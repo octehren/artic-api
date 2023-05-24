@@ -1,25 +1,28 @@
 # Artwork Browser & Simplified Shop
 
+Artwork IDs for easy reference: 26650 122159 22736 21934 14572
+
 ## Instructions
-- Check list of artworks: 
+- `/artworks` Check list of artworks (optional page & perPage params): 
 `curl -X GET "http://localhost:3000/artworks?page=100&perPage=2"`
 (replace values for page & perPage params; default perPage = 25)
-- Check artwork:
+- `/artwork` Check artwork (mandatory id param):
 `curl -X GET "http://localhost:3000/artwork?id=122159"`
-- Logins, receives auth token (must send email & password on request body):
+- `/login` Logins, receives auth token (must send email & password on request body):
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"email": "user1@email.com", "password": "password"}' http://localhost:3000/login
 ```
-- Signs up, receives auth token (must send email & password on request body):
+- `/signup` Signs up, receives auth token (must send email & password on request body):
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"email": "user1000@email.com", "password": "password"}' http://localhost:3000/signup
 ```
-- Acquire artwork:
+- `/acquire` Acquire artwork (mandatory id param for artwork and auth token on header):
 Replace \<token> with value received on login/signup.
-`curl -X GET 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer <token>'`
+`curl -X POST 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer <token>'`
 Ex:
-`curl -X GET 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4NDg5NTUzNSwiaWF0IjoxNjg0ODkzNzM1fQ.4FequD9pM5jbpWhG38LV51rUoQbvVLj4m9bv6iwde7Q'`
-
+`curl -X POST 'localhost:3000/acquire?id=122159' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4NDg5NTUzNSwiaWF0IjoxNjg0ODkzNzM1fQ.4FequD9pM5jbpWhG38LV51rUoQbvVLj4m9bv6iwde7Q'`
+- `/myArtworks` Browser my acquired artworks (mandatory auth token on header):
+`curl -X GET 'localhost:3000/myArtworks' -H 'Authorization: Bearer <token>'`
 ### Testing
 Start dev container:
 `docker-compose -f docker-compose.dev.yml up --build`
@@ -48,9 +51,9 @@ AUTH SERVICE
 - [x] Add tests for auth service
 - [x] Add routes (index of artworks with pagination, individual artwork showing owner if existing, login, *auth* purchase)
 WRAP-UP
-- [ ] Add myArtworks route
-- [ ] Add integration tests for routes
-- [ ] Populate this README with instructions on how to run the app
+- [x] Add myArtworks route
+- [x] Add integration tests for routes (login, sign-up, purchase)
+- [x] Populate this README with instructions on how to run the app
 
 
 ## ARTIC API
